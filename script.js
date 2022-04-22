@@ -9,15 +9,27 @@ function computerPlay() {
 }
 
 /* Get player's choice */
-function playerSelection() {
-    playerChoice = window.prompt('Rock, paper, or scissors? ').toLowerCase();
+function playerPlay() {
+    playerChoice = window.prompt('Rock, Paper, or Scissors? ').toLowerCase();
     return playerChoice;
 }
 
-
-
 /* Compare player's choice to computer's choice and determine winner */
-
+function playRockPaperScissors(computerSelection, playerSelection) {
+    console.log(`You picked ${playerSelection}. Computer picked ${computerSelection}`);
+    if (playerSelection === computerSelection) {
+        result = 'It\'s a tie!';
+    } else if (playerSelection === 'rock' & computerSelection === 'scissors') {
+        result = 'You win! Rock beats Scissors.'
+    } else if (playerSelection === 'scissors' & computerSelection === 'paper') {
+        result = 'You win! Scissors beats Paper.'
+    } else if (playerSelection === 'paper' & computerSelection === 'rock') {
+        result = 'You win! Rock beats Scissors.'
+    } else {
+        result = 'You lose!'
+    }
+    console.log(result)
+}
 
 
 
