@@ -31,9 +31,10 @@ function playRockPaperScissors(computerSelection, playerSelection) {
     } else if (playerSelection === 'paper' & computerSelection === 'rock') {
         result = 'You win! Rock beats Scissors.';
     } else {
-        result = 'You lose!'
+        result = `You lose! ${computerSelection} beats ${playerSelection}`
     }
     console.log(result);
+    return result;
 }
 
 
