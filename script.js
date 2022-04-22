@@ -11,8 +11,12 @@ function computerPlay() {
 /* Get player's choice */
 function playerPlay() {
     playerChoice = window.prompt('Rock, Paper, or Scissors? ').toLowerCase();
-    playerChoiceFormatted = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1); 
-    return playerChoiceFormatted;
+    playerChoiceFormatted = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
+    if (playerChoiceFormatted === 'Rock' || playerChoiceFormatted === 'Paper' || playerChoiceFormatted === 'Scissors') {
+        return playerChoiceFormatted;
+    } else {
+        return 'Invalid input. Please try again';
+    }
 }
 
 /* Compare player's choice to computer's choice and determine winner */
@@ -29,7 +33,7 @@ function playRockPaperScissors(computerSelection, playerSelection) {
     } else {
         result = 'You lose!'
     }
-    console.log(result)
+    console.log(result);
 }
 
 
