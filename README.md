@@ -1,3 +1,3 @@
-A basic rock paper scissors game played through the console.
+A basic rock paper scissors game with a simple UI.
 
 Just practicing JS fundamentals
