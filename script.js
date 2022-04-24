@@ -1,23 +1,17 @@
-/* Define possible choices for player and computer */
+/* Define computer choices and set new game variables */
 const gameChoices = ['Rock', 'Paper', 'Scissors'];
+let playerScore = 0;
+let computerScore = 0;
+let gameOn = true;
+document.getElementById('results').innerHTML = "<p>Choose your weapon...</p>";
+document.getElementById('score').innerHTML = "<p>Player: 0 | Computer: 0</p>";
+
 
 /* Get computer's choice */
 function computerPlay() {
     randomNum = Math.floor(Math.random() * 3);
-    computerChoice = gameChoices[randomNum];
+    let computerChoice = gameChoices[randomNum];
     return computerChoice;
-}
-
-/* Get player's choice */
-function playerPlay() {
-    playerChoice = window.prompt('Rock, Paper, or Scissors? ').toLowerCase();
-    playerChoiceFormatted = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
-    if (playerChoiceFormatted === 'Rock' || playerChoiceFormatted === 'Paper' || playerChoiceFormatted === 'Scissors') {
-        return playerChoiceFormatted;
-    } else {
-        alert('Invalid input. Please try again');
-        playerPlay();
-    }
 }
 
 /* Compare player's choice to computer's choice and determine winner */
@@ -32,51 +26,80 @@ function playRound(computerSelection, playerSelection) {
 
     if (playerSelection === computerSelection) {
         resultDisplay.textContent = 'It\'s a tie!';
-        score = 0;
+        outcome = 0;
     } else if (playerSelection === 'Rock' & computerSelection === 'Scissors') {
         resultDisplay.textContent = 'You win! Rock beats Scissors.';
-        score = 1;
+        outcome = 1;
     } else if (playerSelection === 'Scissors' & computerSelection === 'Paper') {
         resultDisplay.textContent = 'You win! Scissors beats Paper.';
-        score = 1;
+        outcome = 1;
     } else if (playerSelection === 'Paper' & computerSelection === 'Rock') {
         resultDisplay.textContent = 'You win! Rock beats Scissors.';
-        score = 1;
+        outcome = 1;
     } else {
         resultDisplay.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
-        score = -1;
+        outcome = -1;
     }
     results.appendChild(resultDisplay);
-    return score;
+    return outcome;
 }
 
+/* Update scoreboard based on outcome of round */
+function updateScore (outcome){
+    if (outcome == 1) {
+        playerScore += 1;
+    } else if (outcome == -1) {
+        computerScore += 1;
+    }
+    document.getElementById('score').innerHTML = "";
+    score = document.querySelector('#score');
+    scoreBoard = document.createElement('p');
+    scoreBoard.textContent = `Player: ${playerScore} | Computer: ${computerScore}`;
+    score.appendChild(scoreBoard);
+}
 
-const buttons = document.querySelectorAll('button');
+/* If any score reaches 5, display outcome and turn off game */
+function checkGameOver () {
+    gameOver = document.querySelector('#game-over');
+    gameOverDisplay = document.createElement('p');
+    if (playerScore === 5) {
+        gameOverDisplay.textContent = `You are the champion of humanity!`;
+        gameOver.appendChild(gameOverDisplay);
+        return true;    
+    } else if (computerScore === 5) {
+        gameOverDisplay.textContent = `You\'ve been defeated by the machines...`;
+        gameOver.appendChild(gameOverDisplay);
+        return true;
+    }
+}
+
+/* Generate new game button and set game variables to starting values to play again */
+function resetGame () {
+    playerScore = 0;
+    computerScore = 0;
+    outcome = 0;
+    const endDiv = document.querySelector('#new-game');
+    newGame = document.createElement('button');
+    newGame.textContent = 'Click here to play again!';
+    endDiv.appendChild(newGame);
+    newGame.addEventListener('click', () => {
+        updateScore();
+        gameOn = true;
+        document.getElementById('game-over').innerHTML = "";
+        document.getElementById('new-game').innerHTML = "";
+        document.getElementById('results').innerHTML = "<p>Choose your weapon...</p>";
+    });
+     
+}
+
+/* Allow buttons to listen for player choice and play rounds until a score reaches 5 */
+const buttons = document.querySelectorAll('.Rock, .Paper, .Scissors');
 buttons.forEach(button => button.addEventListener('click', () => {
-    playRound(computerPlay(), `${button.classList}`);
-}));
-
-
-/* Play best of 5 and record score */
-// function game() {
-//     playerScore = 0;
-//     computerScore = 0;
-//     for (let i = 0; i < 5; i++) {
-//         playRound(computerPlay(), playerPlay());
-//         if (score === 1) {
-//             playerScore += 1;
-//         } else if (score === -1) {
-//             computerScore += 1;
-//         }
-//         console.log(`Your score: ${playerScore}. Computer score: ${computerScore}.`);
-//     }
-//     if (playerScore > computerScore) {
-//         console.log(`You beat the computer with a score of ${playerScore} to ${computerScore}. Congratulations!`);
-//     } else if (computerScore > playerScore) {
-//         console.log(`The computer beat you with a score of ${computerScore} to ${playerScore}. Better luck next time!`);
-//     } else {
-//         console.log(`You tied the computer with a score of ${playerScore}!`);
-//     }
-// }
-
+    if (gameOn) {
+    updateScore(playRound(computerPlay(), `${button.classList}`));
+     if (checkGameOver()) {
+        gameOn = false;
+        resetGame()
+     }
+}}));
 
